@@ -40,9 +40,7 @@ function App() {
                     <div className="w3-container">
                         <h3 className="w3-padding-64">
                             <b>
-                                Company
-                                <br />
-                                Name
+                                For Your Info
                             </b>
                         </h3>
                     </div>
@@ -73,7 +71,7 @@ function App() {
                     >
                         ☰
                     </button>
-                    <span>Company Name</span>
+                    <span>For Your Info</span>
                 </header>
 
                 {/* Overlay */}

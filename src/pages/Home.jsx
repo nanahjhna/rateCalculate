@@ -2,43 +2,81 @@
 import axios from "axios";
 
 function Home() {
-    const [rates, setRates] = useState([]);
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}${month}${day}`; // YYYYMMDD 형식
+    };
+
+    const today = formatDate(new Date());
+
+    const [rates, setRates] = useState([]); // 전체 환율 데이터
+    const [selectedDate, setSelectedDate] = useState(today); // 오늘 날짜 기본값
+    const [selectedCurrency, setSelectedCurrency] = useState("JPY(100)"); // 기본 통화
 
     useEffect(() => {
+        if (!selectedDate) return;
+
         axios
             .get("/api/site/program/financial/exchangeJSON", {
                 params: {
                     authkey: import.meta.env.VITE_API_KEY,
-                    searchdate: "20250912",
+                    searchdate: selectedDate,
                     data: "AP01",
                 },
             })
             .then((res) => {
-                // 전체 환율 데이터
-                const data = res.data;
-
-                // 일본(JPY)만 필터링
-                const filtered = data.filter(
-                    (rate) => rate.cur_unit === "JPY(100)"
-                );
-
-                // 화면에 보여줄 데이터 세팅
-                setRates(filtered);
+                setRates(res.data);
             })
             .catch((err) => console.error("API 에러:", err));
-    }, []);
+    }, [selectedDate]);
+
+    // 선택된 나라 환율 데이터 찾기
+    const selectedRate = rates.find((rate) => rate.cur_unit === selectedCurrency);
 
     return (
         <div className="w3-main" style={{ marginLeft: "340px", marginRight: "40px" }}>
-            <h2>환율 정보</h2>
+            {/* 날짜 선택 */}
+            <div className="w3-container" style={{ marginTop: "80px" }} id="showcase">
+                <h1 className="w3-jumbo"><b>환율 정보</b></h1>
+                <hr style={{ width: "50px", border: "5px solid red" }} className="w3-round" />
+
+                <label>날짜 선택: </label>
+                <input
+                    type="date"
+                    value={`${selectedDate.slice(0, 4)}-${selectedDate.slice(4, 6)}-${selectedDate.slice(6, 8)}`}
+                    onChange={(e) => setSelectedDate(e.target.value.replace(/-/g, ""))}
+                />
+            </div>
+
+            {/* 통화 선택 */}
+            <div className="w3-row-padding">
+                <label>통화 선택: </label>
+                <select
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                >
+                    {rates.map((rate, index) => (
+                        <option key={index} value={rate.cur_unit}>
+                            {rate.cur_nm} ({rate.cur_unit})
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            {/* 환율 정보 출력 */}
             <ul>
-                {/* 원화는 기준 통화라 1원으로 고정 */}
-                <li>대한민국 원 (KRW): 1원</li>
-                {rates.map((rate, index) => (
-                    <li key={index}>
-                        {rate.cur_nm} ({rate.cur_unit}) : {rate.deal_bas_r}원
-                    </li>
-                ))}
+                {selectedRate && (
+                    <>
+                        <li>
+                            {selectedRate.cur_nm} ({selectedRate.cur_unit})
+                        </li>
+                        <li>매매기준율: {selectedRate.deal_bas_r}원</li>
+                        <li>살 때 (TTB, 전신환 매입율): {selectedRate.ttb}원</li>
+                        <li>팔 때 (TTS, 전신환 매도율): {selectedRate.tts}원</li>
+                    </>
+                )}
             </ul>
         </div>
     );
