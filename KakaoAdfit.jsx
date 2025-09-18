@@ -3,7 +3,7 @@
 const KakaoAdfit = () => {
     useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js";
+        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js"; // 프로토콜 명시
         script.async = true;
         document.head.appendChild(script);
 
