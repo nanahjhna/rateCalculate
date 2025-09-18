@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Showcase from "./pages/Showcase";
+import KakaoAdfit from "./../KakaoAdfit";
 
 function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -129,6 +130,9 @@ function App() {
                             w3.css
                         </a>
                     </p>
+
+                    {/* 카카오 애드핏 광고 */}
+                    <KakaoAdfit />
                 </div>
             </div>
         </Router>
