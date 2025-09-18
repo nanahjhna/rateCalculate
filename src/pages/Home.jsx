@@ -6,50 +6,38 @@ function Home() {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        return `${year}${month}${day}`;
+        return `${year}${month}${day}`; // YYYYMMDD 형식
     };
 
     const today = formatDate(new Date());
 
-    const [rates, setRates] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(today);
-    const [selectedCurrency, setSelectedCurrency] = useState("JPY(100)");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [rates, setRates] = useState([]); // 전체 환율 데이터
+    const [selectedDate, setSelectedDate] = useState(today); // 오늘 날짜 기본값
+    const [selectedCurrency, setSelectedCurrency] = useState("JPY(100)"); // 기본 통화
 
-    const fetchRates = async () => {
-        setLoading(true);
-        setError(null);
+    useEffect(() => {
+        if (!selectedDate) return;
 
-        const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // 임시 프록시
-        const apiUrl = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
-
-        try {
-            const res = await axios.get(proxyUrl + apiUrl, {
+        axios
+            .get("/api/site/program/financial/exchangeJSON", {
                 params: {
                     authkey: import.meta.env.VITE_API_KEY,
                     searchdate: selectedDate,
                     data: "AP01",
                 },
-            });
-            setRates(res.data || []);
-        } catch (err) {
-            console.error("API 에러:", err);
-            setError("환율 정보를 가져오는 데 실패했습니다.");
-            setRates([]);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchRates();
+            })
+            .then((res) => {
+                setRates(res.data);
+            })
+            .catch((err) => console.error("API 에러:", err));
     }, [selectedDate]);
 
+    // 선택된 나라 환율 데이터 찾기
     const selectedRate = rates.find((rate) => rate.cur_unit === selectedCurrency);
 
     return (
         <div className="w3-main" style={{ marginLeft: "340px", marginRight: "40px" }}>
+            {/* 날짜 선택 */}
             <div className="w3-container" style={{ marginTop: "80px" }} id="showcase">
                 <h1 className="w3-jumbo"><b>환율 정보</b></h1>
                 <hr style={{ width: "50px", border: "5px solid red" }} className="w3-round" />
@@ -62,7 +50,8 @@ function Home() {
                 />
             </div>
 
-            <div className="w3-row-padding" style={{ marginTop: "20px" }}>
+            {/* 통화 선택 */}
+            <div className="w3-row-padding">
                 <label>통화 선택: </label>
                 <select
                     value={selectedCurrency}
@@ -76,17 +65,19 @@ function Home() {
                 </select>
             </div>
 
-            {loading && <p>환율 정보를 불러오는 중...</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-
-            {selectedRate && !loading && !error && (
-                <ul style={{ marginTop: "20px" }}>
-                    <li>{selectedRate.cur_nm} ({selectedRate.cur_unit})</li>
-                    <li>매매기준율: {selectedRate.deal_bas_r}원</li>
-                    <li>살 때 (TTB, 전신환 매입율): {selectedRate.ttb}원</li>
-                    <li>팔 때 (TTS, 전신환 매도율): {selectedRate.tts}원</li>
-                </ul>
-            )}
+            {/* 환율 정보 출력 */}
+            <ul>
+                {selectedRate && (
+                    <>
+                        <li>
+                            {selectedRate.cur_nm} ({selectedRate.cur_unit})
+                        </li>
+                        <li>매매기준율: {selectedRate.deal_bas_r}원</li>
+                        <li>살 때 (TTB, 전신환 매입율): {selectedRate.ttb}원</li>
+                        <li>팔 때 (TTS, 전신환 매도율): {selectedRate.tts}원</li>
+                    </>
+                )}
+            </ul>
         </div>
     );
 }
