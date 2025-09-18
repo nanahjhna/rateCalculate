@@ -2,12 +2,11 @@
 import axios from "axios";
 
 function Home() {
-    // 오늘 날짜 YYYYMMDD
     const formatDate = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
-        return `${year}${month}${day}`;
+        return `${year}${month}${day}`; // YYYYMMDD 형식
     };
 
     const today = formatDate(new Date());
@@ -40,14 +39,16 @@ function Home() {
         fetchRates();
     }, [selectedDate]);
 
+    // 선택된 나라 환율 데이터 찾기
     const selectedRate = rates.find((rate) => rate.cur_unit === selectedCurrency);
 
     return (
-        <div style={{ margin: "20px" }}>
-            <h2>환율 정보</h2>
-
+        <div className="w3-main" style={{ marginLeft: "340px", marginRight: "40px" }}>
             {/* 날짜 선택 */}
-            <div>
+            <div className="w3-container" style={{ marginTop: "80px" }} id="showcase">
+                <h1 className="w3-jumbo"><b>환율 정보</b></h1>
+                <hr style={{ width: "50px", border: "5px solid red" }} className="w3-round" />
+
                 <label>날짜 선택: </label>
                 <input
                     type="date"
@@ -57,47 +58,33 @@ function Home() {
             </div>
 
             {/* 통화 선택 */}
-            <div>
+            <div className="w3-row-padding">
                 <label>통화 선택: </label>
                 <select
                     value={selectedCurrency}
                     onChange={(e) => setSelectedCurrency(e.target.value)}
                 >
-                    {rates.map((rate, idx) => (
-                        <option key={idx} value={rate.cur_unit}>
+                    {rates.map((rate, index) => (
+                        <option key={index} value={rate.cur_unit}>
                             {rate.cur_nm} ({rate.cur_unit})
                         </option>
                     ))}
                 </select>
             </div>
 
-            {/* 환율 정보 */}
-            <table border="1" cellPadding="5" style={{ marginTop: "10px" }}>
-                <thead>
-                    <tr>
-                        <th>통화명</th>
-                        <th>매매기준율</th>
-                        <th>살 때 (TTB)</th>
-                        <th>팔 때 (TTS)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>대한민국 원 (KRW)</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    {selectedRate && (
-                        <tr>
-                            <td>{selectedRate.cur_nm} ({selectedRate.cur_unit})</td>
-                            <td>{selectedRate.deal_bas_r}</td>
-                            <td>{selectedRate.ttb}</td>
-                            <td>{selectedRate.tts}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            {/* 환율 정보 출력 */}
+            <ul>
+                {selectedRate && (
+                    <>
+                        <li>
+                            {selectedRate.cur_nm} ({selectedRate.cur_unit})
+                        </li>
+                        <li>매매기준율: {selectedRate.deal_bas_r}원</li>
+                        <li>살 때 (TTB, 전신환 매입율): {selectedRate.ttb}원</li>
+                        <li>팔 때 (TTS, 전신환 매도율): {selectedRate.tts}원</li>
+                    </>
+                )}
+            </ul>
         </div>
     );
 }
