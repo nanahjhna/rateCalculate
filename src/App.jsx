@@ -119,20 +119,9 @@ function App() {
                     style={{ marginTop: "75px", paddingRight: "58px" }}
                 >
                     <p className="w3-right">
-                        Powered by{" "}
-                        <a
-                            href="https://www.w3schools.com/w3css/default.asp"
-                            title="W3.CSS"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="w3-hover-opacity"
-                        >
-                            w3.css
-                        </a>
+                        {/* 카카오 애드핏 광고 */}
+                        <KakaoAdfit />
                     </p>
-
-                    {/* 카카오 애드핏 광고 */}
-                    <KakaoAdfit />
                 </div>
             </div>
         </Router>
