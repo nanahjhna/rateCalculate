@@ -17,8 +17,8 @@ const KakaoAdfit = () => {
             className="kakao_ad_area"
             style={{ display: "none" }}
             data-ad-unit="DAN-OJQ9ukmkWGqkFdsV"
-            data-ad-width="300"
-            data-ad-height="250"
+            data-ad-width="320"
+            data-ad-height="50"
         />
     );
 };
