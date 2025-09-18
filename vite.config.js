@@ -5,11 +5,11 @@ export default defineConfig({
     plugins: [react()],
     server: {
         proxy: {
-            "/api": {
-                target: "https://oapi.koreaexim.go.kr",
+            '/api': {
+                target: 'https://www.koreaexim.go.kr',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, ""),
-            },
-        },
-    },
+                rewrite: path => path.replace(/^\/api/, '')
+            }
+        }
+    }
 });
