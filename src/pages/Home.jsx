@@ -18,18 +18,19 @@ function Home() {
     useEffect(() => {
         if (!selectedDate) return;
 
-        axios
-            .get("/api/site/program/financial/exchangeJSON", {
-                params: {
-                    authkey: import.meta.env.VITE_API_KEY,
-                    searchdate: selectedDate,
-                    data: "AP01",
-                },
-            })
-            .then((res) => {
+        const fetchRates = async () => {
+            try {
+                // Netlify Function은 /.netlify/functions/ 경로에서 접근 가능
+                const res = await axios.get("/.netlify/functions/exchange", {
+                    params: { date: selectedDate },
+                });
                 setRates(res.data);
-            })
-            .catch((err) => console.error("API 에러:", err));
+            } catch (err) {
+                console.error("API 호출 실패:", err);
+            }
+        };
+
+        fetchRates();
     }, [selectedDate]);
 
     // 선택된 나라 환율 데이터 찾기
