@@ -23,6 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 /.vs
-
-# Local Netlify folder
-.netlify
