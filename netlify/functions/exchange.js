@@ -4,16 +4,21 @@ export async function handler(event, context) {
     try {
         const { date } = event.queryStringParameters;
 
-        // 실제 배포에서는 SSL 검증 켜기 (httpsAgent 제거)
+        if (!process.env.API_KEY) {
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: "API_KEY not set in environment variables" }),
+            };
+        }
+
         const response = await axios.get(
             "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON",
             {
                 params: {
-                    authkey: process.env.API_KEY, // Netlify Dashboard 환경변수
+                    authkey: process.env.API_KEY,
                     searchdate: date,
                     data: "AP01",
                 },
-                // maxRedirects 옵션은 기본값 5회 사용
             }
         );
 
