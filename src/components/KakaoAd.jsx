@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 
 const KakaoAd = () => {
     useEffect(() => {
@@ -22,9 +22,9 @@ const KakaoAd = () => {
         <ins
             className="kakao_ad_area"
             style={{ display: 'none' }}
-            data-ad-unit="DAN-OJQ9ukmkWGqkFdsV"
-            data-ad-width="300"
-            data-ad-height="250"
+            data-ad-unit="DAN-lc5XJZM03T9iOmxY"
+            data-ad-width="320"
+            data-ad-height="50"
         ></ins>
     );
 };

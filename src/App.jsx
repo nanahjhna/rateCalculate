@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
@@ -21,17 +21,6 @@ function App() {
                     <p className="w3-right">
                         {/* 👇 2. 원하는 위치에 KakaoAd 컴포넌트를 추가합니다. */}
                         <KakaoAd />
-
-                        Powered by{" "}
-                        <a
-                            href="https://www.w3schools.com/w3css/default.asp"
-                            title="W3.CSS"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="w3-hover-opacity"
-                        >
-                            w3.css
-                        </a>
                     </p>
                 </div>
             </div>
