@@ -19,3 +19,28 @@ body {
     .w3-half img:hover {
         opacity: 1;
     }
+
+/* react-datepicker에서 공휴일 날짜 스타일 */
+.react-datepicker__day--holiday,
+.holiday-day {
+    background-color: #ffdddd !important;
+    color: red !important;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* react-calendar 기본 스타일이 적용된 상태에서 추가 스타일 */
+.react-calendar__tile.saturday {
+    color: #007BFF !important; /* 파란색 */
+}
+
+.react-calendar__tile.sunday {
+    color: #FF3B30 !important; /* 빨간색 */
+}
+
+.react-calendar__tile.holiday {
+    background-color: #FFE5E5 !important; /* 연한 빨강 배경 */
+    color: #D00000 !important; /* 진한 빨강 글씨 */
+    font-weight: bold;
+    border-radius: 50%;
+}

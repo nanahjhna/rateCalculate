@@ -1,0 +1,42 @@
+﻿/* 일반 달력 날짜 스타일 */
+.react-datepicker__day {
+    padding: 8px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+    /* 토요일 - 파란색 */
+    .react-datepicker__day.saturday {
+        color: #007bff !important;
+        font-weight: bold;
+    }
+
+    /* 일요일 - 빨간색 */
+    .react-datepicker__day.sunday {
+        color: #e53935 !important;
+        font-weight: bold;
+    }
+
+/* 공휴일 - 연한 빨강 배경 + 진한 빨강 글씨 */
+.holiday-day {
+    background-color: #ffe5e5 !important;
+    color: #d00000 !important;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* 선택된 날짜 강조 */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+    background-color: #f0f0f0 !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+/* 미래일(선택 불가) 스타일 */
+.react-datepicker__day--disabled {
+    color: #ccc !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
